@@ -70,6 +70,6 @@ formula como un **enfoque combinado** de dos modelos de deep learning:
 
 - [x] 1. Definición de objetivos (negocio y técnico)
 - [x] 2. Análisis Exploratorio de Datos (EDA) — `notebooks/01_EDA.ipynb`
-- [ ] 3. Modelamiento — Modelo 1 (clasificador) + Modelo 2 (autoencoder)
-- [ ] 4. Evaluación
+- [x] 3. Modelamiento — Modelo 1 (`02_...`) + Modelo 2 (`03_...`)
+- [x] 4. Evaluación — métricas M1 (PR-AUC, validación temporal) + anomalías M2
 - [ ] 5. Reporte final
