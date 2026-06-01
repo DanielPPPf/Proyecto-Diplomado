@@ -21,13 +21,20 @@ recursos donde el riesgo real es mayor, reduciendo el tiempo de detección de
 amenazas dirigidas.
 
 ### Objetivo técnico
-Desarrollar un modelo de deep learning que clasifique sesiones SSH (Cowrie) en
-**automatizada vs. interactiva-humana**, a partir de la secuencia temporal de
-comandos y sus metadatos (intervalos entre comandos, duración de sesión, longitud
-y tipo de comandos, presencia de errores/typos). La sesión se modela como una
-**secuencia** mediante una arquitectura recurrente (LSTM/GRU) o convolucional 1D,
-evaluada con métricas para clases desbalanceadas (precision, recall, F1, AUC).
-Diseñado para inferencia por sesión, como base de una detección en tiempo casi real.
+El EDA mostró que el 99.8% de las sesiones son fuerza bruta sin comandos y que las
+sesiones activas son casi todas automatizadas (ritmo de máquina, payloads Mirai
+repetidos), con muy pocas candidatas a actividad humana. Por ello el objetivo se
+formula como un **enfoque combinado** de dos modelos de deep learning:
+
+1. **Clasificador de escalada (supervisado).** Predecir si una sesión será
+   *fuerza bruta* vs. *interactiva* (ejecuta comandos) a partir de señales de la
+   fase de login (intentos, duración, país, versión del cliente), sin usar los
+   comandos como entrada. MLP de Keras con manejo de desbalance extremo, evaluado
+   con precision, recall, F1, AUC y PR-curve.
+2. **Detección de anomalías (no supervisado).** Autoencoder sobre la secuencia de
+   comandos de las sesiones activas, que aprende el payload automatizado "normal"
+   y marca por error de reconstrucción las sesiones raras —candidatas a actividad
+   humana o novedosa— rescatando la intención original del proyecto.
 
 ---
 
@@ -62,7 +69,7 @@ Diseñado para inferencia por sesión, como base de una detección en tiempo cas
 ## 5. Etapas
 
 - [x] 1. Definición de objetivos (negocio y técnico)
-- [ ] 2. Análisis Exploratorio de Datos (EDA)
-- [ ] 3. Modelamiento (diseño experimental, modelo, datos, entrenamiento)
+- [x] 2. Análisis Exploratorio de Datos (EDA) — `notebooks/01_EDA.ipynb`
+- [ ] 3. Modelamiento — Modelo 1 (clasificador) + Modelo 2 (autoencoder)
 - [ ] 4. Evaluación
 - [ ] 5. Reporte final
