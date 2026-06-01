@@ -1,0 +1,35 @@
+# Datos (no versionar datasets grandes)
+data/raw/*
+data/processed/*
+!data/**/.gitkeep
+
+# Modelos entrenados
+models/*
+!models/.gitkeep
+*.h5
+*.weights.h5
+*.keras
+*.pkl
+*.joblib
+
+# Figuras generadas
+reports/figures/*
+!reports/figures/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+
+# Jupyter
+*.nbconvert.ipynb
+
+# Entornos / sistema
+.env
+.DS_Store
+.idea/
+.vscode/
