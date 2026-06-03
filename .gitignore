@@ -33,3 +33,7 @@ env/
 .DS_Store
 .idea/
 .vscode/
+
+# Lab: muestras y veredictos generados
+lab/inference/sample_cowrie.json
+lab/inference/verdicts_sample.json
