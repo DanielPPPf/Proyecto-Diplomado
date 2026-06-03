@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #
 # Provisiona el laboratorio en AWS:
-#   - manager : Wazuh all-in-one (manager+indexer+dashboard)   t3.large
-#   - victim  : Cowrie + servicio de inferencia + agente Wazuh  t3.medium
+#   - manager : Wazuh all-in-one (manager+indexer+dashboard)   m7i.large
+#   - victim  : Cowrie + servicio de inferencia + agente Wazuh  m7i.large
 #
 # Requiere aws-cli configurado. NO expongas esto a producción: es un lab.
 # Todo queda etiquetado Project=ssh-classifier-lab para borrarlo con teardown.sh
@@ -13,8 +13,8 @@ PROJECT=ssh-classifier-lab
 KEY_NAME=${PROJECT}-key
 KEY_FILE=$HOME/.ssh/${KEY_NAME}.pem
 SG_NAME=${PROJECT}-sg
-MANAGER_TYPE=t3.large
-VICTIM_TYPE=t3.medium
+MANAGER_TYPE=${MANAGER_TYPE:-m7i-flex.large}   # 8 GB, elegible free-tier
+VICTIM_TYPE=${VICTIM_TYPE:-m7i-flex.large}     # 8 GB, elegible free-tier
 
 MY_IP=$(curl -s https://checkip.amazonaws.com)/32
 echo "Tu IP pública (para acceso admin/dashboard): $MY_IP"
@@ -51,7 +51,7 @@ if [ "$SG_ID" = "None" ] || [ -z "$SG_ID" ]; then
     --protocol tcp --port 2222 --cidr 0.0.0.0/0
   # comunicación interna del SG (agente Wazuh -> manager 1514/1515)
   aws ec2 authorize-security-group-ingress --region "$REGION" --group-id "$SG_ID" \
-    --protocol tcp --port 1514-1515 --source-group "$SG_ID"
+    --ip-permissions "IpProtocol=tcp,FromPort=1514,ToPort=1515,UserIdGroupPairs=[{GroupId=$SG_ID}]"
   echo "   creado: $SG_ID"
 fi
 
