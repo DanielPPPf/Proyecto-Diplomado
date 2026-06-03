@@ -59,8 +59,9 @@ echo "==> Instancia MANAGER ($MANAGER_TYPE) con Wazuh all-in-one"
 cat > /tmp/manager-userdata.sh <<'UD'
 #!/bin/bash
 sysctl -w vm.max_map_count=262144
-curl -sO https://packages.wazuh.com/4.x/wazuh-install.sh
-bash wazuh-install.sh -a -i >/var/log/wazuh-install.log 2>&1
+# nota: la ruta /4.x/ dejó de existir; usar versión explícita
+curl -fsSL -o /root/wazuh-install.sh https://packages.wazuh.com/4.13/wazuh-install.sh
+bash /root/wazuh-install.sh -a -i >/var/log/wazuh-install.log 2>&1
 UD
 MANAGER_ID=$(aws ec2 run-instances --region "$REGION" --image-id "$AMI" \
   --instance-type "$MANAGER_TYPE" --key-name "$KEY_NAME" \
