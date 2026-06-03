@@ -218,6 +218,7 @@ def classify(art, feat):
         reason += f"; contenido inusual (recon_err={recon:.2f} > {t_review:.2f})"
 
     return {
+        "app": "ssh-classifier",
         "timestamp": datetime.utcnow().isoformat() + "Z",
         "session": feat["session"],
         "src_ip": feat["src_ip"],

@@ -1,0 +1,50 @@
+<!--
+  Reglas personalizadas de Wazuh para los veredictos del clasificador SSH.
+  Instalar en el MANAGER en: /var/ossec/etc/rules/local_rules.xml
+  (o un archivo propio referenciado en ossec.conf <ruleset><rule_include>).
+
+  Los veredictos llegan como JSON (log_format json en el agente), por lo que sus
+  campos quedan accesibles directamente: verdict, src_ip, novel_campaign, etc.
+  Tras editar, reiniciar: systemctl restart wazuh-manager
+-->
+<group name="ssh_classifier,cowrie,">
+
+  <!-- Regla base: cualquier evento del clasificador -->
+  <rule id="100100" level="0">
+    <field name="app">ssh-classifier</field>
+    <description>Clasificador SSH: veredicto de sesión recibido.</description>
+  </rule>
+
+  <!-- Sesión automatizada (bot): informativo -->
+  <rule id="100101" level="3">
+    <if_sid>100100</if_sid>
+    <field name="verdict">AUTOMATED</field>
+    <description>SSH AUTOMATIZADO desde $(src_ip): bot/script (ritmo de máquina).</description>
+    <group>ssh_automated,</group>
+  </rule>
+
+  <!-- Sesión manual (humano hands-on-keyboard): ALTA prioridad -->
+  <rule id="100102" level="12">
+    <if_sid>100100</if_sid>
+    <field name="verdict">MANUAL</field>
+    <description>SSH MANUAL desde $(src_ip): posible atacante humano activo ($(n_commands) comandos).</description>
+    <group>ssh_manual,attack,</group>
+  </rule>
+
+  <!-- Comando único: no se puede decidir ritmo -->
+  <rule id="100103" level="5">
+    <if_sid>100100</if_sid>
+    <field name="verdict">UNCERTAIN</field>
+    <description>SSH INDETERMINADO desde $(src_ip): comando único, sin ritmo para clasificar.</description>
+    <group>ssh_uncertain,</group>
+  </rule>
+
+  <!-- Campaña novedosa (contenido muy inusual): media-alta, sea bot o humano -->
+  <rule id="100104" level="10">
+    <if_sid>100100</if_sid>
+    <field name="novel_campaign">true</field>
+    <description>SSH CAMPAÑA NOVEDOSA desde $(src_ip): secuencia de comandos atípica (autoencoder).</description>
+    <group>ssh_novel,</group>
+  </rule>
+
+</group>

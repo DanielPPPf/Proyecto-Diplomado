@@ -1,0 +1,21 @@
+<!--
+  Añadir estos bloques al ossec.conf del AGENTE (víctima):
+      /var/ossec/etc/ossec.conf   (dentro de <ossec_config>)
+  Luego reiniciar el agente:  systemctl restart wazuh-agent
+
+  1) Veredictos del clasificador (lo que dispara las alertas AUTO/MANUAL).
+  2) (Opcional) el cowrie.json crudo, por si quieres ver también los eventos
+     originales del honeypot en el dashboard.
+-->
+
+<!-- 1) Veredictos del clasificador SSH -->
+<localfile>
+  <log_format>json</log_format>
+  <location>/var/log/ssh-classifier/verdicts.json</location>
+</localfile>
+
+<!-- 2) Eventos crudos de Cowrie (opcional) -->
+<localfile>
+  <log_format>json</log_format>
+  <location>/home/cowrie/cowrie/var/log/cowrie/cowrie.json</location>
+</localfile>
