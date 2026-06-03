@@ -6,7 +6,7 @@ Modelo de deep learning que clasifica sesiones SSH capturadas por un honeypot
 (Cowrie) en **automatizadas** (bots, escáneres, gusanos) vs. **interactivas
 humanas** ("hands-on-keyboard"), a partir de la secuencia temporal de comandos.
 
----
+----
 
 ## 1. Objetivos
 
@@ -36,7 +36,7 @@ formula como un **enfoque combinado** de dos modelos de deep learning:
    y marca por error de reconstrucción las sesiones raras —candidatas a actividad
    humana o novedosa— rescatando la intención original del proyecto.
 
----
+----
 
 ## 2. Estructura del proyecto
 
