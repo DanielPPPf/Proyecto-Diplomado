@@ -79,7 +79,7 @@ hr { border: none; border-top: 1px solid #d0d7de; margin: 26px 0; }
   </div>
   <div class="meta" style="margin-top:30px;">
     <strong>Proyecto Final — Diplomado de Deep Learning</strong><br>
-    Autor: Daniel (DanielPPPf) · Junio 2026<br>
+    Daniel Pareja Franco - Celeste Duran Junio 2026<br>
     Repositorio: github.com/DanielPPPf/Proyecto-Diplomado
   </div>
 </div>
